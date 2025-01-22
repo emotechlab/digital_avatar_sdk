@@ -2,7 +2,7 @@
 
 Welcome to the official Javascript client for Emotech's Digital Assistant API's. The system works with three modular API's/clients:
 
-- [ASR](emoASR.js): Automatic Speech Recognition for talking with the avatar.
+- [ASR](emoASRV2.js): Automatic Speech Recognition for talking with the avatar.
 - [emoDA](emoDA.mjs): The client which controls things like:
   - The avatar selection
   - What language it speaks (English, Arabic msa, Arabic ksa, Arabic egypt)
