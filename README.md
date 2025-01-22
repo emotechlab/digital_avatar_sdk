@@ -30,10 +30,13 @@ You will see this in the command line window:
 ![image](https://github.com/user-attachments/assets/f9f26f0b-fffe-467d-89cb-81488d6e4f0a)
 
 
-Go to http://127.0.0.1:8080, you will see: ![image](https://github.com/user-attachments/assets/c4499bad-539f-497c-9b36-5f57524690f8)
+Go to http://127.0.0.1:8080, you will see: 
+![image](https://github.com/user-attachments/assets/c4499bad-539f-497c-9b36-5f57524690f8)
 
-Click Examples, da_example: ![image](https://github.com/user-attachments/assets/396715f5-d60c-48e8-9ece-3a1f5cf2b780)
+Click Examples, da_example: 
+![image](https://github.com/user-attachments/assets/396715f5-d60c-48e8-9ece-3a1f5cf2b780)
 
 If it run successfully, you will see a website like this and you can try out basic DA function here: 
-![image](https://github.com/user-attachments/assets/666a99c1-93b0-46d6-b240-bc54a9ea4f27)
+![image](https://github.com/user-attachments/assets/d02dc17e-3518-430b-9d11-59c33365899c)
+
 
