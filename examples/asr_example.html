@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="module" src="../emoASRV2.js"></script>
+    <script type="module">
+      import EmoASR from "../emoASRV2.js";
+      addEventListener("DOMContentLoaded", () => {
+        let total;
+        let asrModel = "whisper";
+        let asr_language = "en-US";
+        const client = new EmoASR({
+          auth: "Your api key",
+          model: asrModel,
+          language: asr_language,
+        });
+        client.mount();
+        let recording = false;
+        document
+          .querySelector("#recordBtn")
+          .addEventListener("click", async (ev) => {
+            if (!recording) {
+              recording = true;
+              ev.target.disabled = true;
+              await client.startRecording((data) => {
+                console.log("Got data:", data);
+
+                if (data.error) {
+                  document.querySelector("#captions").textContent = data.error;
+                } else {
+                  let this_part =
+                    asrModel === "whisper"
+                      ? data.results[0] + " "
+                      : data.transcript + " ";
+                  document.querySelector("#captions").textContent = this_part;
+
+                  if (!data.is_partial) {
+                    total = total + " " + this_part;
+                    document.querySelector("#full").textContent = total;
+                  }
+                  document.querySelector("#partial").textContent =
+                    data.is_partial;
+                }
+                if (!data.is_partial) {
+                  ev.target.disabled = true;
+                  client.stopRecording().then(() => {
+                    ev.target.disabled = false;
+                    ev.target.value = "Start recording";
+                    recording = false;
+                  });
+                }
+              });
+              ev.target.disabled = false;
+              ev.target.value = "🔴 Recording...";
+            } else {
+              recording = false;
+              ev.target.disabled = true;
+              await client.stopRecording();
+              ev.target.disabled = false;
+              ev.target.value = "Start recording";
+            }
+          });
+      });
+    </script>
+    <style>
+      body {
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: row;
+      }
+
+      main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 50vw;
+        height: 30vh;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <input type="button" value="Start recording" id="recordBtn" />
+      <p><strong>Transcript: </strong><span id="captions"></span></p>
+      <p><strong>Full Transcript: </strong><span id="full"></span></p>
+      <p><strong>Is Partial: </strong><span id="partial"></span></p>
+    </main>
+  </body>
+</html>

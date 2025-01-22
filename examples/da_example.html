@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+  <div>
+    <div id="input-field">
+      <p>Make DA Speak:</p>
+      <input type="text" id="textInput" />
+      <button id="speakBtn">Speak</button> <br />
+      <p>Make DA Skip the current Speech:</p>
+      <button id="skipBtn">Skip</button> <br />
+      <p>Change background image(A public accessible image url):</p>
+      <input type="text" id="ImageUrlInput" />
+      <button id="imageBtn">Change Background Image</button> <br />
+
+      <p>Change Bg Color:</p>
+      <input type="color" id="colorInput" />
+      <button id="colorBtn">ChangeColor</button> <br />
+
+      <p>Switch Language:</p>
+      <button id="enBtn">EN</button>
+      <button id="arMsaBtn">AR-MSA</button>
+      <button id="arKsaBtn">AR-KSA</button>
+      <button id="arEgyptBtn">AR-EGYPT</button> <br />
+
+      <p>Current language:</p>
+      <p id="currentlan">EN</p>
+
+      <label for="actorDropdown">Select an Actor:</label>
+      <select id="actorDropdown">
+        <!-- Options will be dynamically populated here -->
+      </select>
+
+      <p>DA Status:</p>
+      <p id="status">Idle</p>
+    </div>
+  </div>
+  <style>
+    #input-field {
+      position: absolute;
+      z-index: 9999;
+    }
+  </style>
+  <head>
+    <script type="module">
+      import EmoDA from "../emoDA.mjs";
+
+      document.addEventListener("DOMContentLoaded", async () => {
+        // If your UI needs to display subtitle while avatar is speaking,
+        // You need to define this two function to get avatar start talking and stop talking signal.
+        // If you don't need this, can set them to none.
+        const onStartSpeaking = () => {
+          console.log("getting start speak signal");
+          let element = document.getElementById("status");
+          element.innerHTML = "speaking";
+        };
+
+        const onStopSpeaking = () => {
+          console.log("getting finish speak signal");
+          let element = document.getElementById("status");
+          element.innerHTML = "idle";
+        };
+
+        // Initialize DA, please include your apikey provided by Emotech.
+        const da = new EmoDA(
+          "Your api key",
+          onStartSpeaking,
+          onStopSpeaking
+        );
+
+        da.mount("#player").then(() => {
+          console.log("Emo DA Mounted");
+        });
+
+        // This is an example of using DA speak command;
+        // Remember to make sure the text and the current DA language are the same.
+        // Use English text with DA language set to English.
+        // Use Arabic text with DA language set to Arabic
+        // If you are using dialect like KSA or Egypt, remember to make sure your text write in diacritics
+        document
+          .querySelectorAll("#speakBtn")[0]
+          .addEventListener("click", function () {
+            let text = document.getElementById("textInput").value;
+            da.speak(text)
+              .then((res) => {
+                console.log("speak resss", res);
+              })
+              .catch((err) => {
+                console.error("speak err", err);
+              });
+          });
+
+        // This is an example of interupting DA's current speech;
+        // Sometimes if you input a very long paragarph and want to skip it in the middle,
+        // This is what you need to use.
+        document
+          .querySelectorAll("#skipBtn")[0]
+          .addEventListener("click", function () {
+            da.skipSpeech();
+          });
+
+        // This is demoing how to set background image for avatar.
+        // Only publicly accessible image url will work.
+        document
+          .querySelectorAll("#imageBtn")[0]
+          .addEventListener("click", function () {
+            let url = document.getElementById("ImageUrlInput").value;
+
+            da.setBackgroundImage(url).catch((err) => {
+              console.error("change background image err", err);
+            });
+          });
+
+        // Switch language Example
+        document.getElementById("enBtn").onclick = () => {
+          const currentLanElement = document.getElementById("currentlan");
+          currentLanElement.textContent = "English";
+          da.setDALanguage("english");
+        };
+        document.getElementById("arMsaBtn").onclick = () => {
+          const currentLanElement = document.getElementById("currentlan");
+          currentLanElement.textContent = "Arabic MSA";
+          da.setDALanguage("arabicMsa");
+        };
+        document.getElementById("arKsaBtn").onclick = () => {
+          const currentLanElement = document.getElementById("currentlan");
+          currentLanElement.textContent = "Arabic KSA";
+          da.setDALanguage("arabicKsa");
+        };
+        document.getElementById("arEgyptBtn").onclick = () => {
+          const currentLanElement = document.getElementById("currentlan");
+          currentLanElement.textContent = "Arabic Egypt";
+          da.setDALanguage("arabicEgypt");
+        };
+
+        // BgColor change
+        // You can also use color as background, here is the example of how to set color.
+        document.getElementById("colorBtn").onclick = () => {
+          da.setBackgroundColor(document.getElementById("colorInput").value);
+        };
+
+        // We support many actors, here's the full list.
+        // At the end of this file, there's an example of how to change actor.
+        const actorObj = {
+          ali: {
+            render_name: "ali",
+            dealer_actor: "ali_white",
+            gender: "Male",
+          },
+          aliCasual: {
+            render_name: "casual_ali",
+            dealer_actor: "ali_white",
+            gender: "Male",
+          },
+          james: {
+            render_name: "james",
+            dealer_actor: "james",
+            gender: "Male",
+          },
+          doctor: {
+            render_name: "doctor",
+            dealer_actor: "james",
+            gender: "Male",
+          },
+          saudi_ali: {
+            render_name: "saudi_ali",
+            dealer_actor: "ali_white",
+            gender: "Male",
+          },
+          omani_ali: {
+            render_name: "omani_ali",
+            dealer_actor: "ali_white",
+            gender: "Male",
+          },
+          emirati_ali_red: {
+            render_name: "emirati_ali_red",
+            dealer_actor: "ali_white",
+            gender: "Male",
+          },
+          emirati_ali_white: {
+            render_name: "emirati_ali_white",
+            dealer_actor: "ali_white",
+            gender: "Male",
+          },
+          qatar_ali: {
+            render_name: "qatar_ali",
+            dealer_actor: "ali_white",
+            gender: "Male",
+          },
+          qatar_ali_red: {
+            render_name: "qatar_ali_red",
+            dealer_actor: "ali_white",
+            gender: "Male",
+          },
+          laura: {
+            render_name: "amy",
+            dealer_actor: "annie",
+            gender: "Female",
+          },
+          aisha: {
+            render_name: "aisha_new",
+            dealer_actor: "aisha_new",
+            gender: "Female",
+          },
+          aisha3: {
+            render_name: "aisha3",
+            dealer_actor: "aisha_new",
+            gender: "Female",
+          },
+          aishaCasual: {
+            render_name: "casual_aisha",
+            dealer_actor: "aisha_new",
+            gender: "Female",
+          },
+          aishablue: {
+            render_name: "aisha_blue_hijab",
+            dealer_actor: "aisha_new",
+            gender: "Female",
+          },
+          lina: {
+            render_name: "Lina",
+            dealer_actor: "aisha_new",
+            gender: "Female",
+          },
+          fatima: {
+            render_name: "fatima_black_abaya",
+            dealer_actor: "aisha_new",
+            gender: "Female",
+          },
+          yasmine: {
+            render_name: "sarah",
+            dealer_actor: "aisha_new",
+            gender: "Female",
+          },
+          aishaDemo: {
+            render_name: "aisha_demo",
+            dealer_actor: "aisha_new",
+            gender: "Female",
+          },
+        };
+
+        const dropdown = document.getElementById("actorDropdown");
+
+        Object.entries(actorObj).forEach(([key, value]) => {
+          const option = document.createElement("option");
+          option.value = key; // Set the option value as the key
+          option.textContent = value.render_name; // Set the option text as render_name
+          dropdown.appendChild(option);
+        });
+
+        // Here is the example of how to change actor.
+        dropdown.addEventListener("change", function () {
+          const selectedKey = dropdown.value; // Get the selected option's key
+          const selectedActor = actorObj[selectedKey]; // Get the corresponding actor object
+          console.log("Selected Actor:", selectedActor);
+          da.setAvatar(selectedKey);
+        });
+      });
+    </script>
+  </head>
+
+  <body>
+    <div id="player"></div>
+  </body>
+</html>
