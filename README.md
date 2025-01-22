@@ -16,4 +16,6 @@ To help get started using the DA API's various examples are provided in the `exa
 - `asr_example.html`: A simple example of interacting with the ASR endpoint. Click to record audio and the transcript is displayed.
 - `da_example.html` An example of all the DA functionality splat onto one webpage. This webpage is intended just as a demo of everything thats offered rather than how a webpage using the avatar might look. It serves as a useful reference for using each feature of the DA.
 
+## How to run Examples
+
 npx http-server -c-1
