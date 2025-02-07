@@ -477,7 +477,7 @@ const languageObj = {
   arabicKsa: {
     dealer_lan_code: "ar",
     dialect: "ksa",
-    support_gender: ["Male"],
+    support_gender: ["Female", "Male"],
     default_avatar: "ali",
   },
   arabicEgypt: {
@@ -524,7 +524,12 @@ class EmoDA {
    * @param {string} onSpeak - when DA start speak, SDK will send a signal, Bind your function to recevive it. Can leave it blank if you don't need it.
    * @param {string} onFinishSpeak - when DA finish speak, SDK will send a signal. Bind your function to recevive it. Can leave it blank if you don't need it.
    */
-  constructor(apiKey, onSpeak = () => {}, onFinishSpeak = () => {}) {
+  constructor(
+    apiKey,
+    onDAInit = () => {},
+    onSpeak = () => {},
+    onFinishSpeak = () => {}
+  ) {
     this.apiKey = apiKey;
     this.retry = 0;
     this.pingInterval = "";
@@ -542,6 +547,7 @@ class EmoDA {
     //Optional
     this.onDAStartSpeaking = onSpeak;
     this.onDAFinishSpeaking = onFinishSpeak;
+    this.onDAInitDone = onDAInit;
 
     // Not supported yet
     // this.changeBackgroundImage = this.setBackgroundImage.bind(this);
@@ -807,6 +813,8 @@ class EmoDA {
       }
       formVoice = formVoice.replace("egyptMale", "ar-EG_Male_1");
       formVoice = formVoice.replace("egyptFemale", "ar-EG_Female_1");
+      formVoice = formVoice.replace("ksaMale", "ar-SA_Male_1");
+      formVoice = formVoice.replace("ksaFemale", "ar-SA_Female_1");
 
       let ttsObj = {
         engine: "Emotech",
@@ -1020,12 +1028,13 @@ class EmoDA {
    */
   daReady() {
     if (!this.daIsReady) {
-      console.log("Da is ready to use, setting everything to default.");
-      const { clientWidth: x, clientHeight: y } = this.player.video;
-      this.setVideoSize(x, y);
-      this.setAvatar(this.actorIndex);
-      this.setBackgroundColor("#d9c4c4");
-      this.setCameraAngle("face", 0);
+      // console.log("Da is ready to use, setting everything to default.");
+      // const { clientWidth: x, clientHeight: y } = this.player.video;
+      // this.setVideoSize(x, y);
+      // this.setAvatar(this.actorIndex);
+      // this.setBackgroundColor("#d9c4c4");
+      // this.setCameraAngle("face", 0);
+      this.onDAInitDone();
       this.daIsReady = true;
     } else {
       console.log("Just updating render ID due to skip speech.");

@@ -59,9 +59,24 @@
           element.innerHTML = "idle";
         };
 
+        const onDAInit = () => {
+          console.log(
+            "Da is ready to use, you can put your initial settings here."
+          );
+          //Example setting of the size of the DA streaming video.
+          // this.setVideoSize(x, y);
+
+          //Example configs like change background, camera angle, default avatar
+          da.setAvatar("aisha3");
+          da.setBackgroundColor("#d9c4c4");
+          da.setCameraAngle("face", 0);
+          da.setDALanguage("english");
+        };
+
         // Initialize DA, please include your apikey provided by Emotech.
         const da = new EmoDA(
           "Your api key",
+          onDAInit,
           onStartSpeaking,
           onStopSpeaking
         );
