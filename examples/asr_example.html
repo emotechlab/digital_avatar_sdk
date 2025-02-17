@@ -6,11 +6,9 @@
       import EmoASR from "../emoASRV2.js";
       addEventListener("DOMContentLoaded", () => {
         let total;
-        let asrModel = "whisper";
-        let asr_language = "en-US";
+        let asr_language = "ar-AE"; //"en-US" or "ar-AE" for arabic
         const client = new EmoASR({
           auth: "Your api key",
-          model: asrModel,
           language: asr_language,
         });
         client.mount();
@@ -27,10 +25,7 @@
                 if (data.error) {
                   document.querySelector("#captions").textContent = data.error;
                 } else {
-                  let this_part =
-                    asrModel === "whisper"
-                      ? data.results[0] + " "
-                      : data.transcript + " ";
+                  let this_part = data.results[0] + " ";
                   document.querySelector("#captions").textContent = this_part;
 
                   if (!data.is_partial) {
