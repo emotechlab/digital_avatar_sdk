@@ -1,8 +1,9 @@
 import Recorder from "../recorder.js";
 import Utils from "../utils.js";
 
+//language: "ar-AE" or "en-US"
 class EmoASR {
-  constructor({ auth, model, language, whisper_config }) {
+  constructor({ auth, language, whisper_config }) {
     if (!auth) {
       throw new Error("No API key provided!");
     }
@@ -11,7 +12,6 @@ class EmoASR {
     this.wsToken = "";
     this.requestUrl = "https://chatda.emotechlab.com";
     this.wssUrl = "wss://chatda.emotechlab.com/asr/ws/";
-    this.model = model || "whisper";
     this.mediaAcquired = false;
     this.recording = false;
     this.language = language || "en-US";
@@ -95,14 +95,11 @@ class EmoASR {
     if (this.recording) {
       return;
     }
-    if (this.model === "whisper") {
-      if (this.language === "en-US") {
-        this.socket = new WebSocket(`${this.wssUrl}en?token=${this.wsToken}`);
-      } else if (this.language === "ar-AE") {
-        this.socket = new WebSocket(`${this.wssUrl}ar?token=${this.wsToken}`);
-      }
-    } else {
-      throw new Error(`unknown model: {}`, this.model);
+
+    if (this.language === "en-US") {
+      this.socket = new WebSocket(`${this.wssUrl}en?token=${this.wsToken}`);
+    } else if (this.language === "ar-AE") {
+      this.socket = new WebSocket(`${this.wssUrl}ar?token=${this.wsToken}`);
     }
     this.socket.addEventListener("message", (event) => {
       const msg = JSON.parse(event.data);
@@ -112,32 +109,21 @@ class EmoASR {
     });
 
     this.handshake = {
-      type: "asrstart",
-      vad_segment_duration: 0.01,
-      bit_depth: 32,
-      sample_rate: this.sample_rate,
-      encoding: "f32le",
-      max_interval: 2.0,
-      language: this.language,
+      request: "start",
+      channel_index: 0,
+      params: {
+        encoding: "s16",
+        sample_rate: this.sample_rate,
+        channel_count: 1,
+      },
+      config: {
+        single_utterance: true,
+        keep_connection: false,
+        partial_interval: 500,
+        reuse_tolerance: 100,
+        "silence-threshold": 1000,
+      },
     };
-    if (this.model === "whisper") {
-      this.handshake = {
-        request: "start",
-        channel_index: 0,
-        params: {
-          encoding: "s16",
-          sample_rate: this.sample_rate,
-          channel_count: 1,
-        },
-        config: {
-          single_utterance: true,
-          keep_connection: false,
-          partial_interval: 500,
-          reuse_tolerance: 100,
-          "silence-threshold": 1000,
-        },
-      };
-    }
 
     // There is a chance when we call this, socket already opened. so eventListneer will be skiped.
     let wsConnected = new Promise((resolve) => {
