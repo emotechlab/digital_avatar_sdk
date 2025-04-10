@@ -827,7 +827,7 @@ class EmoDA {
       };
 
       // sends http request with job specification for the avatar to speak
-      this.request("post", `${this.requestUrl}/da/dealer/`, {
+      this.request("post", `${this.requestUrl}/da/dealer`, {
         language: languageObj[this.language].dealer_lan_code,
         lipsync: true,
         facesync: false,
@@ -836,7 +836,7 @@ class EmoDA {
         tts_params: ttsObj,
         emotion: emotionObj,
         renderer_id: renderid,
-        debug: true,
+        debug: false,
       })
         .then((sentence) => {
           console.log("request send", sentence);
