@@ -535,8 +535,15 @@ class EmoDA {
     this.pingInterval = "";
     this.player = null;
     this.rendererUrl = "";
-    this.requestUrl = "https://chatda.emotechlab.com";
-    this.wsUrl = "wss://chatda.emotechlab.com/ws/apikey/";
+    
+    // To use the London deployment, uncomment the lines below:
+    // this.requestUrl = "https://chatda.emotechlab.com";
+    // this.wsUrl = "wss://chatda.emotechlab.com/ws/apikey/";
+
+    // Currently, the demo is using the UAE deployment:
+    this.requestUrl = "https://emoda-uae.api.emotechlab.com";
+    this.wsUrl = "wss://emoda-uae.api.emotechlab.com/ws/apikey/";
+
     this.wsToken = "";
     this.actorIndex = "yasmine";
     this.language = "english";

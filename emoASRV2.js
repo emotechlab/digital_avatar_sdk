@@ -10,8 +10,15 @@ class EmoASR {
 
     this.apiKey = auth;
     this.wsToken = "";
-    this.requestUrl = "https://chatda.emotechlab.com";
-    this.wssUrl = "wss://chatda.emotechlab.com/asr/ws/";
+
+    // To use the London deployment, uncomment the lines below:
+    // this.requestUrl = "https://chatda.emotechlab.com";
+    // this.wsUrl = "wss://chatda.emotechlab.com/ws/apikey/";
+
+    // Currently, the demo is using the UAE deployment:
+    this.requestUrl = "https://emoda-uae.api.emotechlab.com";
+    this.wsUrl = "wss://emoda-uae.api.emotechlab.com/ws/apikey/";
+
     this.mediaAcquired = false;
     this.recording = false;
     this.language = language || "en-US";
@@ -97,9 +104,9 @@ class EmoASR {
     }
 
     if (this.language === "en-US") {
-      this.socket = new WebSocket(`${this.wssUrl}en?token=${this.wsToken}`);
+      this.socket = new WebSocket(`${this.wsUrl}en?token=${this.wsToken}`);
     } else if (this.language === "ar-AE") {
-      this.socket = new WebSocket(`${this.wssUrl}ar?token=${this.wsToken}`);
+      this.socket = new WebSocket(`${this.wsUrl}ar?token=${this.wsToken}`);
     }
     this.socket.addEventListener("message", (event) => {
       const msg = JSON.parse(event.data);
