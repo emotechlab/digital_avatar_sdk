@@ -38,12 +38,11 @@ Click Examples, da_example:
 If it run successfully, you will see a website like this and you can try out basic DA function here:
 ![image](https://github.com/user-attachments/assets/d02dc17e-3518-430b-9d11-59c33365899c)
 
-
 ## 🌍 Choose Your DA Deployment
 
 To reduce latency, we recommend using a Digital Avatar (DA) deployed closer to your region. Emotech provides two deployment options:
 
-- 🇦🇪 **UAE Deployment** (default)  
+- 🇦🇪 **UAE Deployment** (default)
 - 🇬🇧 **London Deployment** (optional)
 
 By default, the DA will start with the **UAE deployment**. If you prefer to use the **London deployment**, follow the steps below.
@@ -51,10 +50,12 @@ By default, the DA will start with the **UAE deployment**. If you prefer to use 
 ### 🔧 How to Switch Deployment
 
 1. Open the following files:
+
    - `emoASRV2.js`
    - `emoDA.mjs`
 
 2. Search for the following variables in both files:
+
    - `this.requestUrl`
    - `this.wsUrl`
 

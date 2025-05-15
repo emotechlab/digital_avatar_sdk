@@ -90,8 +90,8 @@ class WebRtcPlayer {
     handleIceCandidate: null,
   };
 
-  constructor(id, { config, version, ...options } = {}) {
-    this.video = this.formatVideo(id);
+  constructor(id, { config, version, videoStyle, ...options } = {}) {
+    this.video = this.formatVideo(id, videoStyle);
     this.audio = this.formatAudio(id);
     this.config = {
       ...this.config,
@@ -124,12 +124,14 @@ class WebRtcPlayer {
    * Formats a video element based on the given ID.
    * If the element with the given ID is a video element, it returns the element itself.
    * Otherwise, it creates a new video element based on the given element and returns it.
-   * @param {string} id - The ID of the element to format as a video.
-   * @returns {HTMLVideoElement} - The formatted video element.
+   * @param {string} id - The CSS selector of the element to format as a video.
+   * @param {Object} [customStyle={}] - Optional custom CSS styles to apply if a new video element is created.
+   * @returns {HTMLVideoElement|null} - The existing or newly created video element, or null if the element doesn't exist.
    */
-  formatVideo(id) {
+  formatVideo(id, customStyle = {}) {
     const el = document.querySelector(id);
-    return el?.tagName === "VIDEO" ? el : this.createVideo(el);
+    if (!el) return null;
+    return el.tagName === "VIDEO" ? el : this.createVideo(el, customStyle);
   }
 
   /**
@@ -145,22 +147,30 @@ class WebRtcPlayer {
   }
 
   /**
-   * Creates a video element and appends it to the specified element.
+   * Creates a video element, applies default and custom styles, and appends it to the specified element.
    * @param {HTMLElement} el - The element to which the video element will be appended.
+   * @param {Object} [customStyle={}] - Optional custom CSS styles to apply to the video element.
    * @returns {HTMLVideoElement} - The created video element.
    */
-  createVideo(el) {
+  createVideo(el, customStyle = {}) {
     const video = document.createElement("video");
-    video.style.position = "fixed";
-    video.style.width = "100%";
-    video.style.height = "100%";
-    video.style.left = 0;
-    video.style.top = 0;
-    video.style.objectFit = isLandscape() ? "contain" : "cover";
+
+    const defaultStyle = {
+      position: "fixed",
+      width: "100%",
+      height: "100%",
+      left: 0,
+      top: 0,
+      objectFit: isLandscape() ? "contain" : "cover",
+    };
+
+    Object.assign(video.style, defaultStyle, customStyle);
+
     video.disablePictureInPicture = true;
     video.playsInline = true;
     video.controls = false;
     video.muted = true;
+
     el.appendChild(video);
     return video;
   }
@@ -521,11 +531,14 @@ class EmoDA {
    *
    * @constructor
    * @param {string} apiKey - your Apikey
-   * @param {string} onSpeak - when DA start speak, SDK will send a signal, Bind your function to recevive it. Can leave it blank if you don't need it.
-   * @param {string} onFinishSpeak - when DA finish speak, SDK will send a signal. Bind your function to recevive it. Can leave it blank if you don't need it.
+   * @param {Object} [customStyle={}] - Optional custom CSS styles to apply to the video element.
+   * @param {Function} [onDAInit] - Optional custom CSS styles to apply to the video element.
+   * @param {Function} [onSpeak] - when DA start speak, SDK will send a signal, Bind your function to recevive it. Can leave it blank if you don't need it.
+   * @param {Function} [onFinishSpeak] - when DA finish speak, SDK will send a signal. Bind your function to recevive it. Can leave it blank if you don't need it.
    */
   constructor(
     apiKey,
+    videoStyle = {},
     onDAInit = () => {},
     onSpeak = () => {},
     onFinishSpeak = () => {}
@@ -535,7 +548,7 @@ class EmoDA {
     this.pingInterval = "";
     this.player = null;
     this.rendererUrl = "";
-    
+
     // To use the London deployment, uncomment the lines below:
     // this.requestUrl = "https://chatda.emotechlab.com";
     // this.wsUrl = "wss://chatda.emotechlab.com/ws/apikey/";
@@ -550,6 +563,7 @@ class EmoDA {
     this.dialect = "msa";
     this.reachLimit = false;
     this.daIsReady = false;
+    this.videoStyle = videoStyle;
 
     //Optional
     this.onDAStartSpeaking = onSpeak;
@@ -607,6 +621,7 @@ class EmoDA {
     this.player = new WebRtcPlayer(selector, {
       config,
       version: 5,
+      videoStyle: this.videoStyle,
       dataChannelReadyCallBack: () => this.askForRenderID(),
       renderIdCallBack: () => this.renderIdCallBack(),
       startTalkingCallBack: () => this.startTalkingWebrtc(),

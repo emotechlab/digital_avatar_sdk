@@ -63,9 +63,9 @@
           console.log(
             "Da is ready to use, you can put your initial settings here."
           );
-          //Example setting of the size of the DA streaming video.
-          // this.setVideoSize(x, y);
-
+          //Example setting of the resolution of the DA streaming video.
+          //If video size set to lower, resolution will also go down.
+          da.setVideoSize(1920, 1080);
           //Example configs like change background, camera angle, default avatar
           da.setAvatar("aisha3");
           da.setBackgroundColor("#d9c4c4");
@@ -73,9 +73,20 @@
           da.setDALanguage("english");
         };
 
+        //Customisation style for video element
+        const defaultVideoStyle = {
+          width: "400px",
+          height: "400px",
+          position: "fixed",
+          left: "240px",
+          top: "200px",
+          objectFit: "contain",
+        };
+
         // Initialize DA, please include your apikey provided by Emotech.
         const da = new EmoDA(
-          "Your api key",
+          "f35a89c4-e57b-4701-91d4-3c6b2e7f3fbd",
+          defaultVideoStyle,
           onDAInit,
           onStartSpeaking,
           onStopSpeaking
