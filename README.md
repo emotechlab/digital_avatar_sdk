@@ -42,10 +42,11 @@ If it run successfully, you will see a website like this and you can try out bas
 
 To reduce latency, we recommend using a Digital Avatar (DA) deployed closer to your region. Emotech provides two deployment options:
 
-- 🇦🇪 **UAE Deployment** (default)
-- 🇬🇧 **London Deployment** (optional)
+- 🇬🇧 **London Deployment** (default)
+- 🇦🇪 **UAE Deployment** (Down)
 
-By default, the DA will start with the **UAE deployment**. If you prefer to use the **London deployment**, follow the steps below.
+By default, the DA will start with the **London deployment**. If you prefer to use the **UAE deployment**, contact emotech team as UAE deployment has been shut down due to resrouce limitation. Once UAE deployment is up, follow the steps below.
+
 
 ### 🔧 How to Switch Deployment
 
@@ -59,6 +60,6 @@ By default, the DA will start with the **UAE deployment**. If you prefer to use 
    - `this.requestUrl`
    - `this.wsUrl`
 
-3. Comment out the **UAE URLs** and uncomment the **London URLs** (or vice versa), depending on your preference.
+3. Comment out the **London URLs** and uncomment the **UAE URLs** (or vice versa), depending on your preference.
 
 > ⚠️ **Important:** Make sure to update both `requestUrl` and `wsUrl` at the same time to avoid mismatched configurations.

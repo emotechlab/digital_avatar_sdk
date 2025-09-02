@@ -12,12 +12,12 @@ class EmoASR {
     this.wsToken = "";
 
     // To use the London deployment, uncomment the lines below:
-    // this.requestUrl = "https://chatda.emotechlab.com";
-    // this.wsUrl = "wss://chatda.emotechlab.com/asr/ws/";
+    this.requestUrl = "https://chatda.emotechlab.com";
+    this.wsUrl = "wss://chatda.emotechlab.com/asr/ws/";
 
-    // Currently, the demo is using the UAE deployment:
-    this.requestUrl = "https://emoda-uae.api.emotechlab.com";
-    this.wsUrl = "wss://emoda-uae.api.emotechlab.com/asr/ws/";
+    // To use the UAE deployment, uncomment the lines below:
+    // this.requestUrl = "https://emoda-uae.api.emotechlab.com";
+    // this.wsUrl = "wss://emoda-uae.api.emotechlab.com/asr/ws/";
 
     this.mediaAcquired = false;
     this.recording = false;
