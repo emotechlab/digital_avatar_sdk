@@ -550,8 +550,8 @@ class EmoDA {
     this.rendererUrl = "";
 
     // To use London deployment, uncomment the lines below:
-    this.requestUrl = "https://chatda.emotechlab.com";
-    this.wsUrl = "wss://chatda.emotechlab.com/ws/apikey/";
+    this.requestUrl = "https://chatda.api.emotechlab.com";
+    this.wsUrl = "wss://chatda.api.emotechlab.com/ws/apikey/";
 
     // To use the UAE deployment, uncomment the lines below:
     // this.requestUrl = "https://emoda-uae.api.emotechlab.com";
