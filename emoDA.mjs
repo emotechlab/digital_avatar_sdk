@@ -697,7 +697,7 @@ class EmoDA {
     console.log("Refresh Token");
 
     return new Promise((resolve, reject) => {
-      this.request("get", `${this.requestUrl}/da/user/token`)
+      this.request("get", `${this.requestUrl}/da/user/refresh-token`)
         .then((res) => {
           console.log("request send", res.data);
           this.wsToken = res.data;
