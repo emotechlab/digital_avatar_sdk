@@ -673,7 +673,7 @@ class EmoDA {
    */
   getApiToken() {
     return new Promise((resolve, reject) => {
-      this.request("get", `${this.requestUrl}/token/init?apikey=${this.apiKey}`)
+      this.request("get", `${this.requestUrl}/da/token/init?apikey=${this.apiKey}`)
         .then((res) => {
           let tokenExpire = Number(res.data.timeOut);
           let refrshTime = tokenExpire * 60 * 1000 - 2 * 60 * 1000;
